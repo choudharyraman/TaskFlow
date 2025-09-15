@@ -24,6 +24,29 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME'].strip('"')]
 
+# Helper function to clean MongoDB documents
+def clean_mongo_doc(doc):
+    """Remove MongoDB ObjectId and other non-serializable fields"""
+    if doc is None:
+        return None
+    if isinstance(doc, list):
+        return [clean_mongo_doc(item) for item in doc]
+    if isinstance(doc, dict):
+        cleaned = {}
+        for key, value in doc.items():
+            if key == '_id':
+                continue  # Skip MongoDB ObjectId
+            elif isinstance(value, ObjectId):
+                continue  # Skip any ObjectId fields
+            elif isinstance(value, dict):
+                cleaned[key] = clean_mongo_doc(value)
+            elif isinstance(value, list):
+                cleaned[key] = clean_mongo_doc(value)
+            else:
+                cleaned[key] = value
+        return cleaned
+    return doc
+
 # Create the main app without a prefix
 app = FastAPI(title="Anti-Procrastination Productivity App", version="1.0.0")
 
