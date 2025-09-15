@@ -13,11 +13,13 @@ def test_sleep_data_detailed():
     """Test sleep data with detailed error info"""
     print("Testing Sleep Data endpoint...")
     
+    from datetime import date, datetime
+    
     sleep_data = {
         "user_id": TEST_USER_ID,
-        "sleep_date": "2024-01-15",
-        "bedtime": "2024-01-15T23:30:00",
-        "wake_time": "2024-01-16T07:00:00",
+        "sleep_date": date.today().isoformat(),
+        "bedtime": datetime.now().replace(hour=23, minute=30).isoformat(),
+        "wake_time": datetime.now().replace(hour=7, minute=0).isoformat(),
         "sleep_duration": 7.5,
         "sleep_quality": 8,
         "bedtime_procrastination_minutes": 30,
