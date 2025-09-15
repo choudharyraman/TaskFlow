@@ -135,12 +135,24 @@ export default function Index() {
       return;
     }
 
-    // For now, show coming soon alert
-    Alert.alert(
-      'Module Coming Soon',
-      `The ${modules.find(m => m.id === moduleId)?.name} module is under development.`,
-      [{ text: 'OK' }]
-    );
+    // Navigate to the specific module (in a real router setup, this would use navigation)
+    // For now, showing coming soon for unimplemented modules
+    const implementedModules = ['cbt', 'mindfulness', 'pomodoro', 'five-minute'];
+    
+    if (implementedModules.includes(moduleId)) {
+      // In a real router app, you'd navigate here
+      Alert.alert(
+        'Module Ready',
+        `The ${modules.find(m => m.id === moduleId)?.name} module is ready! Navigate to /${moduleId} to use it.`,
+        [{ text: 'OK' }]
+      );
+    } else {
+      Alert.alert(
+        'Module Coming Soon',
+        `The ${modules.find(m => m.id === moduleId)?.name} module is under development.`,
+        [{ text: 'OK' }]
+      );
+    }
   };
 
   const startQuickPomodoro = async () => {
