@@ -500,7 +500,8 @@ async def get_activity_sessions(user_id: str, limit: int = 50):
 @api_router.post("/sleep/data", response_model=SleepData)
 async def create_sleep_data(sleep_data: SleepData):
     """Log sleep data"""
-    await db.sleep_data.insert_one(sleep_data.dict())
+    sleep_dict = sleep_data.dict()
+    await db.sleep_data.insert_one(sleep_dict)
     return sleep_data
 
 @api_router.get("/sleep/data/{user_id}", response_model=List[SleepData])
