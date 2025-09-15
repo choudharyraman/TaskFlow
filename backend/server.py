@@ -684,15 +684,18 @@ async def get_dashboard_data(user_id: str):
         {"user_id": user_id}
     ).sort("unlock_date", -1).limit(3).to_list(3)
     
-    return {
-        "user_progress": progress,
-        "recent_pomodoros": recent_pomodoros,
-        "recent_thought_records": recent_thought_records,
-        "active_intentions": active_intentions,
-        "recent_sleep": recent_sleep,
-        "recent_achievements": recent_achievements,
+    # Clean all MongoDB documents
+    dashboard_data = {
+        "user_progress": clean_mongo_doc(progress),
+        "recent_pomodoros": clean_mongo_doc(recent_pomodoros),
+        "recent_thought_records": clean_mongo_doc(recent_thought_records),
+        "active_intentions": clean_mongo_doc(active_intentions),
+        "recent_sleep": clean_mongo_doc(recent_sleep),
+        "recent_achievements": clean_mongo_doc(recent_achievements),
         "timestamp": datetime.utcnow()
     }
+    
+    return dashboard_data
 
 # Include the router in the main app
 app.include_router(api_router)
