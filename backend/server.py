@@ -525,6 +525,9 @@ async def get_activity_sessions(user_id: str, limit: int = 50):
 async def create_sleep_data(sleep_data: SleepData):
     """Log sleep data"""
     sleep_dict = sleep_data.dict()
+    # Convert date to string for MongoDB storage
+    if 'sleep_date' in sleep_dict and hasattr(sleep_dict['sleep_date'], 'isoformat'):
+        sleep_dict['sleep_date'] = sleep_dict['sleep_date'].isoformat()
     await db.sleep_data.insert_one(sleep_dict)
     return sleep_data
 
