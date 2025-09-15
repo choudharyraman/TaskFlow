@@ -534,7 +534,8 @@ async def get_sleep_data(user_id: str, limit: int = 30):
     data = await db.sleep_data.find(
         {"user_id": user_id}
     ).sort("sleep_date", -1).limit(limit).to_list(limit)
-    return [SleepData(**item) for item in data]
+    cleaned_data = clean_mongo_doc(data)
+    return [SleepData(**item) for item in cleaned_data]
 
 # Accountability Routes
 @api_router.post("/accountability/partners", response_model=AccountabilityPartner)
