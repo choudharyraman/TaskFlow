@@ -292,8 +292,22 @@ export default function Index() {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Anti-Procrastination App</Text>
-        <Text style={styles.headerSubtitle}>Science-Based Productivity</Text>
+        {activeModule !== 'dashboard' && (
+          <TouchableOpacity onPress={() => setActiveModule('dashboard')}>
+            <Ionicons name="arrow-back" size={24} color="#1E293B" />
+          </TouchableOpacity>
+        )}
+        <View style={styles.headerContent}>
+          <Text style={styles.headerTitle}>
+            {activeModule === 'dashboard' ? 'Anti-Procrastination App' : 
+             modules.find(m => m.id === activeModule)?.name || 'Module'}
+          </Text>
+          <Text style={styles.headerSubtitle}>
+            {activeModule === 'dashboard' ? 'Science-Based Productivity' : 
+             'Tap back arrow to return to dashboard'}
+          </Text>
+        </View>
+        {activeModule === 'dashboard' && <View style={{ width: 24 }} />}
       </View>
 
       {/* Content */}
