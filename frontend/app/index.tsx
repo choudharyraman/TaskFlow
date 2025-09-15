@@ -297,7 +297,15 @@ export default function Index() {
       </View>
 
       {/* Content */}
-      {activeModule === 'dashboard' ? renderDashboard() : (
+      {activeModule === 'dashboard' && renderDashboard()}
+      {activeModule === 'cbt' && <CBTModule />}
+      {activeModule === 'mindfulness' && <MindfulnessModule />}
+      {activeModule === 'pomodoro' && <PomodoroModule />}
+      {activeModule === 'five-minute' && <FiveMinuteModule />}
+      {activeModule === 'activity' && <ActivityModule />}
+      {activeModule === 'analytics' && <AnalyticsModule />}
+      {activeModule === 'intentions' && <IntentionsModule />}
+      {!['dashboard', 'cbt', 'mindfulness', 'pomodoro', 'five-minute', 'activity', 'analytics', 'intentions'].includes(activeModule) && (
         <View style={styles.content}>
           <Text style={styles.comingSoonText}>Module under development</Text>
         </View>
