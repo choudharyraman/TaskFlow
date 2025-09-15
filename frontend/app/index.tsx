@@ -137,7 +137,7 @@ export default function Index() {
 
     // Navigate to the specific module (in a real router setup, this would use navigation)
     // For now, showing coming soon for unimplemented modules
-    const implementedModules = ['cbt', 'mindfulness', 'pomodoro', 'five-minute', 'activity', 'analytics'];
+    const implementedModules = ['cbt', 'mindfulness', 'pomodoro', 'five-minute', 'activity', 'analytics', 'intentions'];
     
     if (implementedModules.includes(moduleId)) {
       // In a real router app, you'd navigate here
