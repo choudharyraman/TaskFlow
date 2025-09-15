@@ -325,36 +325,38 @@ export default function Index() {
         </View>
       )}
 
-      {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.navScroll}>
-          {modules.map((module) => (
-            <TouchableOpacity
-              key={module.id}
-              style={[
-                styles.navItem,
-                activeModule === module.id && styles.navItemActive,
-                { borderTopColor: module.color }
-              ]}
-              onPress={() => handleModulePress(module.id)}
-            >
-              <Ionicons
-                name={module.icon as any}
-                size={20}
-                color={activeModule === module.id ? module.color : '#9CA3AF'}
-              />
-              <Text
+      {/* Bottom Navigation - only show on dashboard */}
+      {activeModule === 'dashboard' && (
+        <View style={styles.bottomNav}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.navScroll}>
+            {modules.map((module) => (
+              <TouchableOpacity
+                key={module.id}
                 style={[
-                  styles.navText,
-                  activeModule === module.id && { color: module.color }
+                  styles.navItem,
+                  activeModule === module.id && styles.navItemActive,
+                  { borderTopColor: module.color }
                 ]}
+                onPress={() => handleModulePress(module.id)}
               >
-                {module.name}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
+                <Ionicons
+                  name={module.icon as any}
+                  size={20}
+                  color={activeModule === module.id ? module.color : '#9CA3AF'}
+                />
+                <Text
+                  style={[
+                    styles.navText,
+                    activeModule === module.id && { color: module.color }
+                  ]}
+                >
+                  {module.name}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
