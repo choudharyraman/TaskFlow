@@ -13,6 +13,15 @@ import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 
+// Import all the module components
+import CBTModule from './cbt';
+import MindfulnessModule from './mindfulness';
+import PomodoroModule from './pomodoro';
+import FiveMinuteModule from './five-minute';
+import ActivityModule from './activity';
+import AnalyticsModule from './analytics';
+import IntentionsModule from './intentions';
+
 // Types
 interface DashboardData {
   user_progress: {
