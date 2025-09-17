@@ -50,6 +50,13 @@ interface DashboardData {
     title: string;
     points_earned: number;
   }>;
+  recent_activities: Array<{
+    title: string;
+    module: string;
+    timestamp: string;
+    points?: number;
+  }>;
+  ai_insights?: string;
 }
 
 const BACKEND_URL = Constants.expoConfig?.extra?.backendUrl || process.env.EXPO_PUBLIC_BACKEND_URL;
