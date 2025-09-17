@@ -13,6 +13,25 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function EnvironmentalModule() {
   const [activeTab, setActiveTab] = useState<'setup' | 'blocks' | 'optimize'>('setup');
+  
+  // Environment settings
+  const [environmentSettings, setEnvironmentSettings] = useState({
+    phone_location: 'bedroom',
+    workspace_organization: 7,
+    lighting_quality: 8,
+    noise_level: 6,
+    distractions_removed: false,
+    focus_cues_setup: true,
+  });
+
+  // App blocking settings
+  const [blockingSettings, setBlockingSettings] = useState({
+    focus_mode_enabled: false,
+    block_duration: 25, // minutes
+    blocked_apps: ['social', 'entertainment', 'news'],
+    blocked_websites: ['facebook.com', 'twitter.com', 'youtube.com'],
+    break_reminders: true,
+  });
 
   const renderEnvironmentSetup = () => (
     <ScrollView style={styles.tabContent}>
