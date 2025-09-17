@@ -158,6 +158,27 @@ export default function Index() {
             points_earned: 50,
           },
         ],
+        recent_activities: [
+          {
+            title: 'Completed 25-minute focus session',
+            module: 'pomodoro',
+            timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+            points: 25,
+          },
+          {
+            title: 'Finished mindfulness meditation',
+            module: 'mindfulness',
+            timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+            points: 15,
+          },
+          {
+            title: 'Created thought record',
+            module: 'cbt',
+            timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
+            points: 20,
+          },
+        ],
+        ai_insights: 'Based on your recent activity, you show strong consistency in morning focus sessions. Consider scheduling more challenging tasks during your peak productivity hours between 9-11 AM.',
       });
     }
   };
