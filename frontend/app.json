@@ -39,7 +39,7 @@
       "typedRoutes": true
     },
     "extra": {
-      "backendUrl": "https://focusfirst.preview.emergentagent.com"
+      "backendUrl": ""
     }
   }
 }
