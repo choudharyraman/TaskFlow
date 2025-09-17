@@ -345,17 +345,21 @@ export default function Index() {
         </View>
       )}
 
-      {/* Bottom Navigation - only show on dashboard */}
+      {/* Bottom Navigation - Scrollable */}
       {activeModule === 'dashboard' && (
         <View style={styles.bottomNav}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.navScroll}>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.navScroll}
+            style={styles.navScrollView}
+          >
             {modules.map((module) => (
               <TouchableOpacity
                 key={module.id}
                 style={[
                   styles.navItem,
-                  activeModule === module.id && styles.navItemActive,
-                  { borderTopColor: module.color }
+                  activeModule === module.id && { ...styles.navItemActive, borderTopColor: module.color }
                 ]}
                 onPress={() => handleModulePress(module.id)}
               >
@@ -369,6 +373,7 @@ export default function Index() {
                     styles.navText,
                     activeModule === module.id && { color: module.color }
                   ]}
+                  numberOfLines={1}
                 >
                   {module.name}
                 </Text>
