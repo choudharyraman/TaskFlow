@@ -277,12 +277,6 @@ export default function Index() {
     }
   };
 
-  const onRefresh = async () => {
-    setIsRefreshing(true);
-    await loadDashboardData(userId);
-    setIsRefreshing(false);
-  };
-
   const getModuleColor = (module: string) => {
     const moduleConfig = modules.find(m => m.id === module);
     return moduleConfig?.color || '#6366F1';
