@@ -13,7 +13,7 @@ import sys
 import os
 
 # Backend URL from environment
-BACKEND_URL = "https://focusfirst.preview.emergentagent.com/api"
+BACKEND_URL = "https://focusflow-53.preview.emergentagent.com/api"
 
 class BackendTester:
     def __init__(self):

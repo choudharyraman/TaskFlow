@@ -6,7 +6,7 @@ Debug specific failing endpoints
 import requests
 import json
 
-BACKEND_URL = "https://focusfirst.preview.emergentagent.com/api"
+BACKEND_URL = "https://focusflow-53.preview.emergentagent.com/api"
 TEST_USER_ID = "6da9ae17-a8a5-4bcf-9551-165483217e76"
 
 def test_sleep_data_detailed():

@@ -115,7 +115,7 @@ backend:
     status_history:
       - working: true
         agent: "testing"
-        comment: "✅ FastAPI Server Setup - Server running correctly on https://focusfirst.preview.emergentagent.com/api. All 15 modules implemented successfully."
+        comment: "✅ FastAPI Server Setup - Server running correctly on https://focusflow-53.preview.emergentagent.com/api. All 15 modules implemented successfully."
       - working: true
         agent: "testing"
         comment: "✅ User Management System - User creation and retrieval working perfectly"
@@ -205,7 +205,7 @@ backend:
     status_history:
       - working: true
         agent: "testing"
-        comment: "Server is running and responding correctly on https://focusfirst.preview.emergentagent.com/api with proper CORS configuration"
+        comment: "Server is running and responding correctly on https://focusflow-53.preview.emergentagent.com/api with proper CORS configuration"
 
   - task: "User Management System"
     implemented: true
