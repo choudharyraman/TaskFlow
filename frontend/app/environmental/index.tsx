@@ -95,57 +95,6 @@ export default function EnvironmentalModule() {
     </ScrollView>
   );
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity>
-          <Ionicons name="arrow-back" size={24} color="#1E293B" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Environmental Design</Text>
-        <View style={{ width: 24 }} />
-      </View>
-
-      {/* Tab Navigation */}
-      <View style={styles.tabContainer}>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'setup' && styles.tabActive]}
-          onPress={() => setActiveTab('setup')}
-        >
-          <Ionicons name="settings" size={20} color={activeTab === 'setup' ? '#84CC16' : '#9CA3AF'} />
-          <Text style={[styles.tabText, activeTab === 'setup' && styles.tabTextActive]}>
-            Setup
-          </Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'blocks' && styles.tabActive]}
-          onPress={() => setActiveTab('blocks')}
-        >
-          <Ionicons name="shield" size={20} color={activeTab === 'blocks' ? '#84CC16' : '#9CA3AF'} />
-          <Text style={[styles.tabText, activeTab === 'blocks' && styles.tabTextActive]}>
-            Blocking
-          </Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'optimize' && styles.tabActive]}
-          onPress={() => setActiveTab('optimize')}
-        >
-          <Ionicons name="bulb" size={20} color={activeTab === 'optimize' ? '#84CC16' : '#9CA3AF'} />
-          <Text style={[styles.tabText, activeTab === 'optimize' && styles.tabTextActive]}>
-            Optimize
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Content */}
-      {activeTab === 'setup' && renderEnvironmentSetup()}
-      {activeTab === 'blocks' && renderAppBlocking()}
-      {activeTab === 'optimize' && renderOptimizationTips()}
-    </SafeAreaView>
-  );
-}
-  
   // Environment settings
   const [environmentSettings, setEnvironmentSettings] = useState({
     phone_location: 'bedroom',
