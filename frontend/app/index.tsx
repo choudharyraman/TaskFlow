@@ -63,6 +63,9 @@ export default function Index() {
     { id: 'activity', name: 'Movement', icon: 'fitness', color: '#84CC16' },
     { id: 'sleep', name: 'Sleep', icon: 'moon', color: '#6366F1' },
     { id: 'social', name: 'Accountability', icon: 'people', color: '#F97316' },
+    { id: 'analytics', name: 'AI Insights', icon: 'analytics', color: '#EC4899' },
+    { id: 'environmental', name: 'Environment', icon: 'leaf', color: '#84CC16' },
+    { id: 'self-compassion', name: 'Self-Care', icon: 'heart', color: '#EC4899' },
   ];
 
   useEffect(() => {
