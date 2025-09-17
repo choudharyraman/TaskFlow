@@ -59,6 +59,7 @@ export default function Index() {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [userId, setUserId] = useState<string>('demo-user');
   const [activeModule, setActiveModule] = useState<string>('dashboard');
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Module configurations
   const modules = [
