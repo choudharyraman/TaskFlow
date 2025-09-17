@@ -8,14 +8,143 @@ import {
   SafeAreaView,
   Alert,
   Switch,
-  Slider,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function EnvironmentalModule() {
-  const [userId, setUserId] = useState<string>('');
   const [activeTab, setActiveTab] = useState<'setup' | 'blocks' | 'optimize'>('setup');
+
+  const renderEnvironmentSetup = () => (
+    <ScrollView style={styles.tabContent}>
+      <Text style={styles.tabTitle}>Environment Setup</Text>
+      <Text style={styles.tabSubtitle}>
+        Optimize your physical and digital environment to reduce friction and eliminate distractions.
+      </Text>
+      
+      <View style={styles.factorCard}>
+        <View style={styles.factorHeader}>
+          <Ionicons name="phone-portrait" size={24} color="#84CC16" />
+          <Text style={styles.factorName}>Phone Placement</Text>
+        </View>
+        <Text style={styles.factorDescription}>
+          Where do you keep your phone during work?
+        </Text>
+        
+        <View style={styles.optionsContainer}>
+          <TouchableOpacity style={styles.optionButton}>
+            <Text style={styles.optionText}>Another room</Text>
+            <Text style={styles.optionImpact}>Low distraction</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={styles.factorCard}>
+        <View style={styles.factorHeader}>
+          <Ionicons name="desktop" size={24} color="#84CC16" />
+          <Text style={styles.factorName}>Workspace Organization</Text>
+        </View>
+        <Text style={styles.factorDescription}>
+          Keep your workspace clean and organized
+        </Text>
+        
+        <View style={styles.tipsContainer}>
+          <Text style={styles.tipText}>• Clear your desk completely before starting work</Text>
+          <Text style={styles.tipText}>• Keep only essential items within reach</Text>
+          <Text style={styles.tipText}>• Create designated spaces for different work types</Text>
+        </View>
+      </View>
+    </ScrollView>
+  );
+
+  const renderAppBlocking = () => (
+    <ScrollView style={styles.tabContent}>
+      <Text style={styles.tabTitle}>App & Website Blocking</Text>
+      <Text style={styles.tabSubtitle}>
+        Block distracting apps and websites during focus sessions
+      </Text>
+      
+      <View style={styles.blockingCard}>
+        <View style={styles.blockingHeader}>
+          <Ionicons name="shield" size={24} color="#84CC16" />
+          <Text style={styles.blockingTitle}>Focus Mode</Text>
+          <Switch value={false} />
+        </View>
+        <Text style={styles.blockingDescription}>
+          Block distracting apps and websites during focus sessions
+        </Text>
+      </View>
+    </ScrollView>
+  );
+
+  const renderOptimizationTips = () => (
+    <ScrollView style={styles.tabContent}>
+      <Text style={styles.tabTitle}>Optimization Tips</Text>
+      <Text style={styles.tabSubtitle}>
+        Evidence-based environmental modifications for better focus
+      </Text>
+      
+      <View style={styles.tipCard}>
+        <Ionicons name="bulb" size={24} color="#F59E0B" />
+        <View style={styles.tipContent}>
+          <Text style={styles.tipTitle}>Digital Environment</Text>
+          <Text style={styles.tipDescription}>
+            Remove unnecessary browser bookmarks and desktop shortcuts
+          </Text>
+        </View>
+      </View>
+    </ScrollView>
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity>
+          <Ionicons name="arrow-back" size={24} color="#1E293B" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Environmental Design</Text>
+        <View style={{ width: 24 }} />
+      </View>
+
+      {/* Tab Navigation */}
+      <View style={styles.tabContainer}>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'setup' && styles.tabActive]}
+          onPress={() => setActiveTab('setup')}
+        >
+          <Ionicons name="settings" size={20} color={activeTab === 'setup' ? '#84CC16' : '#9CA3AF'} />
+          <Text style={[styles.tabText, activeTab === 'setup' && styles.tabTextActive]}>
+            Setup
+          </Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'blocks' && styles.tabActive]}
+          onPress={() => setActiveTab('blocks')}
+        >
+          <Ionicons name="shield" size={20} color={activeTab === 'blocks' ? '#84CC16' : '#9CA3AF'} />
+          <Text style={[styles.tabText, activeTab === 'blocks' && styles.tabTextActive]}>
+            Blocking
+          </Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'optimize' && styles.tabActive]}
+          onPress={() => setActiveTab('optimize')}
+        >
+          <Ionicons name="bulb" size={20} color={activeTab === 'optimize' ? '#84CC16' : '#9CA3AF'} />
+          <Text style={[styles.tabText, activeTab === 'optimize' && styles.tabTextActive]}>
+            Optimize
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Content */}
+      {activeTab === 'setup' && renderEnvironmentSetup()}
+      {activeTab === 'blocks' && renderAppBlocking()}
+      {activeTab === 'optimize' && renderOptimizationTips()}
+    </SafeAreaView>
+  );
+}
   
   // Environment settings
   const [environmentSettings, setEnvironmentSettings] = useState({
