@@ -600,6 +600,9 @@ const styles = StyleSheet.create({
   navScroll: {
     paddingHorizontal: 8,
   },
+  navScrollView: {
+    paddingHorizontal: 8,
+  },
   navItem: {
     alignItems: 'center',
     paddingHorizontal: 12,
