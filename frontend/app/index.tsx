@@ -326,7 +326,11 @@ export default function Index() {
       {activeModule === 'activity' && <ActivityModule />}
       {activeModule === 'analytics' && <AnalyticsModule />}
       {activeModule === 'intentions' && <IntentionsModule />}
-      {!['dashboard', 'cbt', 'mindfulness', 'pomodoro', 'five-minute', 'activity', 'analytics', 'intentions'].includes(activeModule) && (
+      {activeModule === 'sleep' && <SleepModule />}
+      {activeModule === 'self-compassion' && <SelfCompassionModule />}
+      {activeModule === 'social' && <SocialModule />}
+      {activeModule === 'environmental' && <EnvironmentalModule />}
+      {!['dashboard', 'cbt', 'mindfulness', 'pomodoro', 'five-minute', 'activity', 'analytics', 'intentions', 'sleep', 'self-compassion', 'social', 'environmental'].includes(activeModule) && (
         <View style={styles.content}>
           <Text style={styles.comingSoonText}>Module under development</Text>
         </View>
