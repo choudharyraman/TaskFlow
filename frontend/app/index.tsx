@@ -766,4 +766,114 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontWeight: '500',
   },
+  // New styles for updated dashboard
+  appTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#1E293B',
+  },
+  appSubtitle: {
+    fontSize: 14,
+    color: '#64748B',
+    marginTop: 4,
+  },
+  progressSection: {
+    marginBottom: 20,
+  },
+  progressOverview: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  progressIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  progressValue: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#1E293B',
+    textAlign: 'center',
+  },
+  quickStartSection: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#1E293B',
+    marginBottom: 16,
+  },
+  quickActions: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  quickActionButton: {
+    width: '48%',
+    marginBottom: 12,
+  },
+  activitySection: {
+    marginBottom: 20,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  activityPoints: {
+    fontSize: 12,
+    color: '#10B981',
+    fontWeight: '500',
+  },
+  emptyActivity: {
+    alignItems: 'center',
+    paddingVertical: 40,
+  },
+  emptyActivityText: {
+    fontSize: 16,
+    color: '#64748B',
+    marginTop: 12,
+    textAlign: 'center',
+  },
+  insightsSection: {
+    marginBottom: 20,
+  },
+  insightsCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  insightsHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  insightsTitle: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#1E293B',
+    marginLeft: 8,
+  },
+  insightsText: {
+    fontSize: 14,
+    color: '#64748B',
+    lineHeight: 20,
+    marginBottom: 16,
+  },
+  insightsButton: {
+    alignSelf: 'flex-start',
+  },
 });
