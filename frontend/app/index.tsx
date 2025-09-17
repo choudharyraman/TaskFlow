@@ -193,6 +193,33 @@ export default function Index() {
     }
   };
 
+  const onRefresh = async () => {
+    setIsRefreshing(true);
+    await loadDashboardData(userId);
+    setIsRefreshing(false);
+  };
+
+  const getModuleColor = (module: string) => {
+    const moduleConfig = modules.find(m => m.id === module);
+    return moduleConfig?.color || '#6366F1';
+  };
+
+  const getModuleIcon = (module: string) => {
+    const moduleConfig = modules.find(m => m.id === module);
+    return moduleConfig?.icon || 'help-circle';
+  };
+
+  const formatTimeAgo = (timestamp: string) => {
+    const now = new Date();
+    const time = new Date(timestamp);
+    const diffInMinutes = Math.floor((now.getTime() - time.getTime()) / (1000 * 60));
+    
+    if (diffInMinutes < 1) return 'Just now';
+    if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
+    return `${Math.floor(diffInMinutes / 1440)}d ago`;
+  };
+
   const renderDashboard = () => (
     <ScrollView 
       style={styles.content} 
