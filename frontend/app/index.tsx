@@ -59,7 +59,7 @@ interface DashboardData {
   ai_insights?: string;
 }
 
-const BACKEND_URL = Constants.expoConfig?.extra?.backendUrl || process.env.EXPO_PUBLIC_BACKEND_URL;
+const BACKEND_URL = Constants.expoConfig?.extra?.backendUrl || process.env.EXPO_PUBLIC_BACKEND_URL || '';
 
 export default function Index() {
   const [isLoading, setIsLoading] = useState(true);
