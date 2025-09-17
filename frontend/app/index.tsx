@@ -68,6 +68,62 @@ export default function Index() {
   const [activeModule, setActiveModule] = useState<string>('dashboard');
   const [isRefreshing, setIsRefreshing] = useState(false);
 
+  // Helper functions
+  const onRefresh = async () => {
+    setIsRefreshing(true);
+    await loadDashboardData();
+    setIsRefreshing(false);
+  };
+
+  const getModuleColor = (module: string): string => {
+    const moduleColors: { [key: string]: string } = {
+      cbt: DesignSystem.Colors.modules.cbt,
+      mindfulness: DesignSystem.Colors.modules.mindfulness,
+      pomodoro: DesignSystem.Colors.modules.pomodoro,
+      'five-minute': DesignSystem.Colors.modules.fiveMinute,
+      activity: DesignSystem.Colors.modules.activity,
+      sleep: DesignSystem.Colors.modules.sleep,
+      social: DesignSystem.Colors.modules.social,
+      analytics: DesignSystem.Colors.modules.analytics,
+      environmental: DesignSystem.Colors.modules.environmental,
+      'self-compassion': DesignSystem.Colors.modules.selfCompassion,
+      gamification: DesignSystem.Colors.modules.gamification,
+      integrations: DesignSystem.Colors.modules.integrations,
+      research: DesignSystem.Colors.modules.research,
+    };
+    return moduleColors[module] || DesignSystem.Colors.primary[500];
+  };
+
+  const getModuleIcon = (module: string): any => {
+    const moduleIcons: { [key: string]: any } = {
+      cbt: 'brain',
+      mindfulness: 'leaf',
+      pomodoro: 'timer',
+      'five-minute': 'play',
+      activity: 'fitness',
+      sleep: 'moon',
+      social: 'people',
+      analytics: 'analytics',
+      environmental: 'leaf',
+      'self-compassion': 'heart',
+      gamification: 'trophy',
+      integrations: 'link',
+      research: 'flask',
+    };
+    return moduleIcons[module] || 'checkmark-circle';
+  };
+
+  const formatTimeAgo = (timestamp: string): string => {
+    const now = new Date();
+    const time = new Date(timestamp);
+    const diffInMinutes = Math.floor((now.getTime() - time.getTime()) / (1000 * 60));
+    
+    if (diffInMinutes < 1) return 'Just now';
+    if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
+    return `${Math.floor(diffInMinutes / 1440)}d ago`;
+  };
+
   // Module configurations
   const modules = [
     { id: 'dashboard', name: 'Dashboard', icon: 'home', color: '#6366F1' },
