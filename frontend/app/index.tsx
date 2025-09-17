@@ -346,42 +346,40 @@ export default function Index() {
       )}
 
       {/* Bottom Navigation - Scrollable */}
-      {activeModule === 'dashboard' && (
-        <View style={styles.bottomNav}>
-          <ScrollView 
-            horizontal 
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.navScroll}
-            style={styles.navScrollView}
-          >
-            {modules.map((module) => (
-              <TouchableOpacity
-                key={module.id}
+      <View style={styles.bottomNav}>
+        <ScrollView 
+          horizontal 
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.navScroll}
+          style={styles.navScrollView}
+        >
+          {modules.map((module) => (
+            <TouchableOpacity
+              key={module.id}
+              style={[
+                styles.navItem,
+                activeModule === module.id && { ...styles.navItemActive, borderTopColor: module.color }
+              ]}
+              onPress={() => setActiveModule(module.id as any)}
+            >
+              <Ionicons
+                name={module.icon as any}
+                size={20}
+                color={activeModule === module.id ? module.color : '#9CA3AF'}
+              />
+              <Text
                 style={[
-                  styles.navItem,
-                  activeModule === module.id && { ...styles.navItemActive, borderTopColor: module.color }
+                  styles.navText,
+                  activeModule === module.id && { color: module.color }
                 ]}
-                onPress={() => handleModulePress(module.id)}
+                numberOfLines={1}
               >
-                <Ionicons
-                  name={module.icon as any}
-                  size={20}
-                  color={activeModule === module.id ? module.color : '#9CA3AF'}
-                />
-                <Text
-                  style={[
-                    styles.navText,
-                    activeModule === module.id && { color: module.color }
-                  ]}
-                  numberOfLines={1}
-                >
-                  {module.name}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-      )}
+                {module.name}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
