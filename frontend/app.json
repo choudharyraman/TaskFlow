@@ -39,7 +39,7 @@
       "typedRoutes": true
     },
     "extra": {
-      "backendUrl": "https://focusflow-53.preview.emergentagent.com"
+      "backendUrl": "http://localhost:8001"
     }
   }
 }
