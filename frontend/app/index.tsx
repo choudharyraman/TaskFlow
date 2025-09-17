@@ -15,8 +15,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 
 // Import UI Components
-// import { Card, Typography, Button } from './components/ui';
-// import DesignSystem from './styles/designSystem';
+import { Card, Typography, Button } from '../src/components/ui';
+import DesignSystem from '../src/styles/designSystem';
 
 // Import all the module components
 import CBTModule from './cbt';
