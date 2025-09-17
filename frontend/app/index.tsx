@@ -69,6 +69,9 @@ export default function Index() {
     { id: 'analytics', name: 'AI Insights', icon: 'analytics', color: '#EC4899' },
     { id: 'environmental', name: 'Environment', icon: 'leaf', color: '#84CC16' },
     { id: 'self-compassion', name: 'Self-Care', icon: 'heart', color: '#EC4899' },
+    { id: 'gamification', name: 'Achievements', icon: 'trophy', color: '#F59E0B' },
+    { id: 'integrations', name: 'Integrations', icon: 'link', color: '#6366F1' },
+    { id: 'research', name: 'Research', icon: 'flask', color: '#8B5CF6' },
   ];
 
   useEffect(() => {
