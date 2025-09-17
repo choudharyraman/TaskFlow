@@ -149,34 +149,9 @@ export default function Index() {
 
   const initializeApp = async () => {
     try {
-      // Check if user exists, create demo user if not
-      let storedUserId = await AsyncStorage.getItem('userId');
-      
-      if (!storedUserId) {
-        // Create demo user
-        const response = await fetch(`${BACKEND_URL}/api/users`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: 'demo@example.com',
-            username: 'Demo User',
-            password: 'demo123'
-          }),
-        });
-
-        if (response.ok) {
-          const user = await response.json();
-          storedUserId = user.id;
-          await AsyncStorage.setItem('userId', storedUserId);
-        } else {
-          storedUserId = 'demo-user-fallback';
-        }
-      }
-
-      setUserId(storedUserId);
-      await loadDashboardData(storedUserId);
+      // For testing purposes, use demo data immediately
+      setUserId('demo-user-testing');
+      await loadDashboardData('demo-user-testing');
     } catch (error) {
       console.error('Initialization error:', error);
       Alert.alert('Error', 'Failed to initialize app. Using offline mode.');
@@ -187,14 +162,10 @@ export default function Index() {
 
   const loadDashboardData = async (userId: string) => {
     try {
-      const response = await fetch(`${BACKEND_URL}/api/dashboard/${userId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setDashboardData(data);
-      }
-    } catch (error) {
-      console.error('Dashboard data error:', error);
-      // Set mock data for demo
+      // For testing, skip API call and use mock data directly
+      console.log('Loading dashboard data for user:', userId);
+      
+      // Set mock data immediately
       setDashboardData({
         user_progress: {
           total_points: 150,
@@ -235,6 +206,19 @@ export default function Index() {
           },
         ],
         ai_insights: 'Based on your recent activity, you show strong consistency in morning focus sessions. Consider scheduling more challenging tasks during your peak productivity hours between 9-11 AM.',
+      });
+    } catch (error) {
+      console.error('Dashboard data error:', error);
+      // Fallback to empty state
+      setDashboardData({
+        user_progress: {
+          total_points: 0,
+          level: 1,
+          current_streak: 0,
+        },
+        recent_pomodoros: [],
+        recent_achievements: [],
+        recent_activities: [],
       });
     }
   };
