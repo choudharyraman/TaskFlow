@@ -25,6 +25,9 @@ import SleepModule from './sleep';
 import SelfCompassionModule from './self-compassion';
 import SocialModule from './social';
 import EnvironmentalModule from './environmental';
+import GamificationModule from './gamification';
+import IntegrationsModule from './integrations';
+import ResearchModule from './research';
 
 // Types
 interface DashboardData {
