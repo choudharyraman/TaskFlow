@@ -21,6 +21,10 @@ import FiveMinuteModule from './five-minute';
 import ActivityModule from './activity';
 import AnalyticsModule from './analytics';
 import IntentionsModule from './intentions';
+import SleepModule from './sleep';
+import SelfCompassionModule from './self-compassion';
+import SocialModule from './social';
+import EnvironmentalModule from './environmental';
 
 // Types
 interface DashboardData {
