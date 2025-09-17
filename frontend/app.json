@@ -37,6 +37,9 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "backendUrl": "https://focusflow-53.preview.emergentagent.com"
     }
   }
 }
