@@ -39,7 +39,7 @@
       "typedRoutes": true
     },
     "extra": {
-      "backendUrl": "http://localhost:8001"
+      "backendUrl": "https://focusfirst.preview.emergentagent.com"
     }
   }
 }
