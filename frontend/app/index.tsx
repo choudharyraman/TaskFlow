@@ -277,195 +277,207 @@ export default function Index() {
     }
   };
 
-  const renderDashboard = () => (
-    <ScrollView 
-      style={styles.content} 
-      refreshControl={
-        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
-      }
-      showsVerticalScrollIndicator={false}
-    >
-      {/* Header Section */}
-      <View style={styles.header}>
-        <View style={styles.headerContent}>
-          <Typography variant="h1" style={styles.appTitle}>
-            Anti-Procrastination App
-          </Typography>
-          <Typography variant="body2" color="secondary" style={styles.appSubtitle}>
-            Science-Based Productivity
-          </Typography>
+  const renderDashboard = () => {
+    // Show loading state if data is not yet loaded
+    if (isLoading || !dashboardData) {
+      return (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#6366F1" />
+          <Text style={styles.loadingText}>Loading your dashboard...</Text>
         </View>
-      </View>
+      );
+    }
 
-      {/* Progress Overview Cards */}
-      <View style={styles.progressSection}>
-        <Card variant="elevated" padding="md" style={styles.progressCard}>
-          <View style={styles.progressOverview}>
-            <View style={styles.progressItem}>
-              <View style={[styles.progressIcon, { backgroundColor: DesignSystem.Colors.warning[100] }]}>
-                <Ionicons name="star" size={24} color={DesignSystem.Colors.warning[600]} />
-              </View>
-              <Typography variant="h3" style={styles.progressValue}>
-                {dashboardData.user_progress?.total_points || 0}
-              </Typography>
-              <Typography variant="caption" color="secondary">
-                Points
-              </Typography>
-            </View>
-            
-            <View style={styles.progressItem}>
-              <View style={[styles.progressIcon, { backgroundColor: DesignSystem.Colors.primary[100] }]}>
-                <Ionicons name="trending-up" size={24} color={DesignSystem.Colors.primary[600]} />
-              </View>
-              <Typography variant="h3" style={styles.progressValue}>
-                {dashboardData.user_progress?.level || 1}
-              </Typography>
-              <Typography variant="caption" color="secondary">
-                Level
-              </Typography>
-            </View>
-            
-            <View style={styles.progressItem}>
-              <View style={[styles.progressIcon, { backgroundColor: DesignSystem.Colors.error[100] }]}>
-                <Ionicons name="flame" size={24} color={DesignSystem.Colors.error[600]} />
-              </View>
-              <Typography variant="h3" style={styles.progressValue}>
-                {dashboardData.user_progress?.current_streak || 0}
-              </Typography>
-              <Typography variant="caption" color="secondary">
-                Day Streak
-              </Typography>
-            </View>
-          </View>
-        </Card>
-      </View>
-
-      {/* Quick Start Actions */}
-      <View style={styles.quickStartSection}>
-        <Typography variant="h3" style={styles.sectionTitle}>
-          Quick Start
-        </Typography>
-        <View style={styles.quickActions}>
-          <Button
-            title="25-Min Focus"
-            icon="timer"
-            variant="primary"
-            size="lg"
-            style={[styles.quickActionButton, { backgroundColor: DesignSystem.Colors.modules.pomodoro }]}
-            onPress={() => setActiveModule('pomodoro')}
-          />
-          <Button
-            title="5-Min Meditation"
-            icon="leaf"
-            variant="primary"
-            size="lg"
-            style={[styles.quickActionButton, { backgroundColor: DesignSystem.Colors.modules.mindfulness }]}
-            onPress={() => setActiveModule('mindfulness')}
-          />
-          <Button
-            title="Just 5 Minutes"
-            icon="play"
-            variant="primary"
-            size="lg"
-            style={[styles.quickActionButton, { backgroundColor: DesignSystem.Colors.modules.fiveMinute }]}
-            onPress={() => setActiveModule('five-minute')}
-          />
-          <Button
-            title="Thought Record"
-            icon="create"
-            variant="primary"
-            size="lg"
-            style={[styles.quickActionButton, { backgroundColor: DesignSystem.Colors.modules.cbt }]}
-            onPress={() => setActiveModule('cbt')}
-          />
-        </View>
-      </View>
-
-      {/* Recent Activity */}
-      <View style={styles.activitySection}>
-        <View style={styles.sectionHeader}>
-          <Typography variant="h3" style={styles.sectionTitle}>
-            Recent Activity
-          </Typography>
-          <Button
-            title="View All"
-            variant="ghost"
-            size="sm"
-            onPress={() => setActiveModule('analytics')}
-          />
-        </View>
-        
-        <Card padding="sm" style={styles.activityCard}>
-          {dashboardData.recent_activities?.length > 0 ? (
-            dashboardData.recent_activities.slice(0, 3).map((activity: any, index: number) => (
-              <View key={index} style={styles.activityItem}>
-                <View style={[styles.activityIcon, { backgroundColor: getModuleColor(activity.module) + '20' }]}>
-                  <Ionicons
-                    name={getModuleIcon(activity.module)}
-                    size={16}
-                    color={getModuleColor(activity.module)}
-                  />
-                </View>
-                <View style={styles.activityContent}>
-                  <Typography variant="body2" weight="medium">
-                    {activity.title}
-                  </Typography>
-                  <Typography variant="caption" color="secondary">
-                    {formatTimeAgo(activity.timestamp)} • {activity.module}
-                  </Typography>
-                </View>
-                {activity.points && (
-                  <Typography variant="caption" style={styles.activityPoints}>
-                    +{activity.points}
-                  </Typography>
-                )}
-              </View>
-            ))
-          ) : (
-            <View style={styles.emptyActivity}>
-              <Ionicons name="checkmark-circle-outline" size={48} color={DesignSystem.Colors.neutral[300]} />
-              <Typography variant="body1" color="secondary" style={styles.emptyActivityText}>
-                Start your productivity journey!
-              </Typography>
-              <Typography variant="caption" color="secondary">
-                Complete your first activity to see progress here
-              </Typography>
-            </View>
-          )}
-        </Card>
-      </View>
-
-      {/* Insights Preview */}
-      {dashboardData.ai_insights && (
-        <View style={styles.insightsSection}>
-          <Typography variant="h3" style={styles.sectionTitle}>
-            AI Insights
-          </Typography>
-          <Card padding="md" style={styles.insightsCard}>
-            <View style={styles.insightsHeader}>
-              <Ionicons name="bulb" size={20} color={DesignSystem.Colors.info[600]} />
-              <Typography variant="body2" weight="medium" style={styles.insightsTitle}>
-                Personal Productivity Insights
-              </Typography>
-            </View>
-            <Typography variant="body2" numberOfLines={3} style={styles.insightsText}>
-              {dashboardData.ai_insights.substring(0, 150)}...
+    return (
+      <ScrollView 
+        style={styles.content} 
+        refreshControl={
+          <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+        }
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Header Section */}
+        <View style={styles.header}>
+          <View style={styles.headerContent}>
+            <Typography variant="h1" style={styles.appTitle}>
+              Anti-Procrastination App
             </Typography>
-            <Button
-              title="View Full Analysis"
-              variant="outline"
-              size="sm"
-              style={styles.insightsButton}
-              onPress={() => setActiveModule('analytics')}
-            />
+            <Typography variant="body2" color="secondary" style={styles.appSubtitle}>
+              Science-Based Productivity
+            </Typography>
+          </View>
+        </View>
+
+        {/* Progress Overview Cards */}
+        <View style={styles.progressSection}>
+          <Card variant="elevated" padding="md" style={styles.progressCard}>
+            <View style={styles.progressOverview}>
+              <View style={styles.progressItem}>
+                <View style={[styles.progressIcon, { backgroundColor: '#FEF3C7' }]}>
+                  <Ionicons name="star" size={24} color="#F59E0B" />
+                </View>
+                <Typography variant="h3" style={styles.progressValue}>
+                  {dashboardData?.user_progress?.total_points || 0}
+                </Typography>
+                <Typography variant="caption" color="secondary">
+                  Points
+                </Typography>
+              </View>
+              
+              <View style={styles.progressItem}>
+                <View style={[styles.progressIcon, { backgroundColor: '#EEF2FF' }]}>
+                  <Ionicons name="trending-up" size={24} color="#6366F1" />
+                </View>
+                <Typography variant="h3" style={styles.progressValue}>
+                  {dashboardData?.user_progress?.level || 1}
+                </Typography>
+                <Typography variant="caption" color="secondary">
+                  Level
+                </Typography>
+              </View>
+              
+              <View style={styles.progressItem}>
+                <View style={[styles.progressIcon, { backgroundColor: '#FEE2E2' }]}>
+                  <Ionicons name="flame" size={24} color="#EF4444" />
+                </View>
+                <Typography variant="h3" style={styles.progressValue}>
+                  {dashboardData?.user_progress?.current_streak || 0}
+                </Typography>
+                <Typography variant="caption" color="secondary">
+                  Day Streak
+                </Typography>
+              </View>
+            </View>
           </Card>
         </View>
-      )}
 
-      {/* Bottom spacing for navigation */}
-      <View style={{ height: 100 }} />
-    </ScrollView>
-  );
+        {/* Quick Start Actions */}
+        <View style={styles.quickStartSection}>
+          <Typography variant="h3" style={styles.sectionTitle}>
+            Quick Start
+          </Typography>
+          <View style={styles.quickActions}>
+            <Button
+              title="25-Min Focus"
+              icon="timer"
+              variant="primary"
+              size="lg"
+              style={[styles.quickActionButton, { backgroundColor: '#F59E0B' }]}
+              onPress={() => setActiveModule('pomodoro')}
+            />
+            <Button
+              title="5-Min Meditation"
+              icon="leaf"
+              variant="primary"
+              size="lg"
+              style={[styles.quickActionButton, { backgroundColor: '#8B5CF6' }]}
+              onPress={() => setActiveModule('mindfulness')}
+            />
+            <Button
+              title="Just 5 Minutes"
+              icon="play"
+              variant="primary"
+              size="lg"
+              style={[styles.quickActionButton, { backgroundColor: '#06B6D4' }]}
+              onPress={() => setActiveModule('five-minute')}
+            />
+            <Button
+              title="Thought Record"
+              icon="create"
+              variant="primary"
+              size="lg"
+              style={[styles.quickActionButton, { backgroundColor: '#10B981' }]}
+              onPress={() => setActiveModule('cbt')}
+            />
+          </View>
+        </View>
+
+        {/* Recent Activity */}
+        <View style={styles.activitySection}>
+          <View style={styles.sectionHeader}>
+            <Typography variant="h3" style={styles.sectionTitle}>
+              Recent Activity
+            </Typography>
+            <Button
+              title="View All"
+              variant="ghost"
+              size="sm"
+              onPress={() => setActiveModule('analytics')}
+            />
+          </View>
+          
+          <Card padding="sm" style={styles.activityCard}>
+            {dashboardData?.recent_activities?.length > 0 ? (
+              dashboardData.recent_activities.slice(0, 3).map((activity: any, index: number) => (
+                <View key={index} style={styles.activityItem}>
+                  <View style={[styles.activityIcon, { backgroundColor: getModuleColor(activity.module) + '20' }]}>
+                    <Ionicons
+                      name={getModuleIcon(activity.module)}
+                      size={16}
+                      color={getModuleColor(activity.module)}
+                    />
+                  </View>
+                  <View style={styles.activityContent}>
+                    <Typography variant="body2" weight="medium">
+                      {activity.title}
+                    </Typography>
+                    <Typography variant="caption" color="secondary">
+                      {formatTimeAgo(activity.timestamp)} • {activity.module}
+                    </Typography>
+                  </View>
+                  {activity.points && (
+                    <Typography variant="caption" style={styles.activityPoints}>
+                      +{activity.points}
+                    </Typography>
+                  )}
+                </View>
+              ))
+            ) : (
+              <View style={styles.emptyActivity}>
+                <Ionicons name="checkmark-circle-outline" size={48} color="#9CA3AF" />
+                <Typography variant="body1" color="secondary" style={styles.emptyActivityText}>
+                  Start your productivity journey!
+                </Typography>
+                <Typography variant="caption" color="secondary">
+                  Complete your first activity to see progress here
+                </Typography>
+              </View>
+            )}
+          </Card>
+        </View>
+
+        {/* Insights Preview */}
+        {dashboardData?.ai_insights && (
+          <View style={styles.insightsSection}>
+            <Typography variant="h3" style={styles.sectionTitle}>
+              AI Insights
+            </Typography>
+            <Card padding="md" style={styles.insightsCard}>
+              <View style={styles.insightsHeader}>
+                <Ionicons name="bulb" size={20} color="#06B6D4" />
+                <Typography variant="body2" weight="medium" style={styles.insightsTitle}>
+                  Personal Productivity Insights
+                </Typography>
+              </View>
+              <Typography variant="body2" numberOfLines={3} style={styles.insightsText}>
+                {dashboardData.ai_insights.substring(0, 150)}...
+              </Typography>
+              <Button
+                title="View Full Analysis"
+                variant="outline"
+                size="sm"
+                style={styles.insightsButton}
+                onPress={() => setActiveModule('analytics')}
+              />
+            </Card>
+          </View>
+        )}
+
+        {/* Bottom spacing for navigation */}
+        <View style={{ height: 100 }} />
+      </ScrollView>
+    );
+  };
 
   if (isLoading) {
     return (
