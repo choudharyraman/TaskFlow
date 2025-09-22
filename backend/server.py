@@ -700,6 +700,276 @@ async def get_dashboard_data(user_id: str):
     
     return dashboard_data
 
+# Store and Coins System APIs
+
+# User wallet management
+@app.get("/api/store/wallet/{user_id}")
+async def get_user_wallet(user_id: str):
+    """Get user's coin wallet information"""
+    try:
+        # Get user's total coins from completed tasks
+        user = await db.users.find_one({"_id": ObjectId(user_id)})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Calculate total coins from task completions
+        total_coins = user.get("user_progress", {}).get("total_coins", 0)
+        coins_earned_today = user.get("user_progress", {}).get("coins_earned_today", 0)
+        lifetime_coins = user.get("user_progress", {}).get("lifetime_coins", total_coins)
+        
+        return {
+            "user_id": user_id,
+            "total_coins": total_coins,
+            "total_inr_value": total_coins / 4,  # 4 coins = 1 INR
+            "coins_earned_today": coins_earned_today,
+            "lifetime_coins": lifetime_coins,
+            "updated_at": datetime.utcnow()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/store/award-coins")
+async def award_coins_for_task(request: dict):
+    """Award coins to user for task completion"""
+    try:
+        user_id = request.get("user_id")
+        task_type = request.get("task_type", "normal")  # "normal" or "big"
+        task_description = request.get("task_description", "")
+        module = request.get("module", "general")
+        
+        if not user_id:
+            raise HTTPException(status_code=400, detail="User ID required")
+        
+        # Determine coin reward
+        coins_awarded = 4 if task_type == "big" else 1
+        
+        # Update user's coin balance
+        current_date = datetime.utcnow().date()
+        
+        # Get current user data
+        user = await db.users.find_one({"_id": ObjectId(user_id)})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        user_progress = user.get("user_progress", {})
+        current_coins = user_progress.get("total_coins", 0)
+        lifetime_coins = user_progress.get("lifetime_coins", 0)
+        
+        # Check if it's a new day for daily coins tracking
+        last_coin_date = user_progress.get("last_coin_date")
+        today_coins = user_progress.get("coins_earned_today", 0)
+        
+        if not last_coin_date or datetime.fromisoformat(str(last_coin_date)).date() != current_date:
+            today_coins = coins_awarded
+        else:
+            today_coins += coins_awarded
+        
+        # Update user progress
+        updated_progress = {
+            **user_progress,
+            "total_coins": current_coins + coins_awarded,
+            "lifetime_coins": lifetime_coins + coins_awarded,
+            "coins_earned_today": today_coins,
+            "last_coin_date": datetime.utcnow()
+        }
+        
+        await db.users.update_one(
+            {"_id": ObjectId(user_id)},
+            {"$set": {"user_progress": updated_progress}}
+        )
+        
+        # Record coin transaction
+        coin_transaction = {
+            "user_id": ObjectId(user_id),
+            "transaction_type": "earned",
+            "amount": coins_awarded,
+            "source": module,
+            "task_type": task_type,
+            "task_description": task_description,
+            "timestamp": datetime.utcnow()
+        }
+        
+        await db.coin_transactions.insert_one(coin_transaction)
+        
+        return {
+            "coins_awarded": coins_awarded,
+            "total_coins": current_coins + coins_awarded,
+            "inr_value": (current_coins + coins_awarded) / 4,
+            "task_type": task_type,
+            "message": f"Congratulations! You earned {coins_awarded} coins for completing this {task_type} task!"
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/store/items")
+async def get_store_items(category: str = "all"):
+    """Get store items"""
+    try:
+        # Return sample store items (in production, this would come from database)
+        store_items = [
+            {
+                "id": "1",
+                "name": "Premium Task Planner",
+                "description": "Beautiful digital planner with advanced task management features",
+                "price_coins": 200,
+                "price_inr": 50,
+                "category": "productivity",
+                "stock": 100,
+                "rating": 4.8,
+                "reviews": 124,
+                "is_digital": True
+            },
+            {
+                "id": "2",
+                "name": "Meditation Cushion",
+                "description": "Comfortable meditation cushion for mindfulness practice",
+                "price_coins": 400,
+                "price_inr": 100,
+                "category": "wellness",
+                "stock": 25,
+                "rating": 4.6,
+                "reviews": 89,
+                "is_digital": False
+            },
+            {
+                "id": "3",
+                "name": "Focus Music Pack",
+                "description": "Curated collection of focus-enhancing music and soundscapes",
+                "price_coins": 120,
+                "price_inr": 30,
+                "category": "digital",
+                "stock": 1000,
+                "rating": 4.9,
+                "reviews": 256,
+                "is_digital": True
+            },
+            {
+                "id": "4",
+                "name": "Productivity Guide Book",
+                "description": "Comprehensive guide to overcoming procrastination and boosting productivity",
+                "price_coins": 320,
+                "price_inr": 80,
+                "category": "books",
+                "stock": 50,
+                "rating": 4.7,
+                "reviews": 167,
+                "is_digital": True
+            }
+        ]
+        
+        if category != "all":
+            store_items = [item for item in store_items if item["category"] == category]
+        
+        return {"items": store_items}
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/store/purchase")
+async def make_purchase(request: dict):
+    """Process store purchase"""
+    try:
+        user_id = request.get("user_id")
+        item_id = request.get("item_id")
+        price_coins = request.get("price_coins")
+        
+        if not all([user_id, item_id, price_coins]):
+            raise HTTPException(status_code=400, detail="Missing required fields")
+        
+        # Check user's coin balance
+        user = await db.users.find_one({"_id": ObjectId(user_id)})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        user_progress = user.get("user_progress", {})
+        current_coins = user_progress.get("total_coins", 0)
+        
+        if current_coins < price_coins:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Insufficient coins. You have {current_coins} but need {price_coins}"
+            )
+        
+        # Deduct coins from user balance
+        updated_coins = current_coins - price_coins
+        user_progress["total_coins"] = updated_coins
+        
+        await db.users.update_one(
+            {"_id": ObjectId(user_id)},
+            {"$set": {"user_progress": user_progress}}
+        )
+        
+        # Record purchase transaction
+        purchase_record = {
+            "user_id": ObjectId(user_id),
+            "item_id": item_id,
+            "price_coins": price_coins,
+            "purchase_date": datetime.utcnow(),
+            "status": "completed",
+            "transaction_id": str(uuid.uuid4())
+        }
+        
+        await db.store_purchases.insert_one(purchase_record)
+        
+        # Record coin transaction
+        coin_transaction = {
+            "user_id": ObjectId(user_id),
+            "transaction_type": "spent",
+            "amount": -price_coins,
+            "source": "store_purchase",
+            "item_id": item_id,
+            "timestamp": datetime.utcnow()
+        }
+        
+        await db.coin_transactions.insert_one(coin_transaction)
+        
+        return {
+            "purchase_id": str(purchase_record["_id"]) if "_id" in purchase_record else purchase_record["transaction_id"],
+            "remaining_coins": updated_coins,
+            "remaining_inr_value": updated_coins / 4,
+            "message": "Purchase successful!"
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/store/orders/{user_id}")
+async def get_user_orders(user_id: str):
+    """Get user's purchase history"""
+    try:
+        orders = await db.store_purchases.find(
+            {"user_id": ObjectId(user_id)}
+        ).sort("purchase_date", -1).to_list(length=50)
+        
+        # Convert ObjectIds to strings
+        for order in orders:
+            order["_id"] = str(order["_id"])
+            order["user_id"] = str(order["user_id"])
+        
+        return {"orders": orders}
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/store/transactions/{user_id}")
+async def get_coin_transactions(user_id: str):
+    """Get user's coin transaction history"""
+    try:
+        transactions = await db.coin_transactions.find(
+            {"user_id": ObjectId(user_id)}
+        ).sort("timestamp", -1).to_list(length=100)
+        
+        # Convert ObjectIds to strings
+        for transaction in transactions:
+            transaction["_id"] = str(transaction["_id"])
+            transaction["user_id"] = str(transaction["user_id"])
+        
+        return {"transactions": transactions}
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 # Include the router in the main app
 app.include_router(api_router)
 
